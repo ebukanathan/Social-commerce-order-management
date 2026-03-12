@@ -59,6 +59,28 @@ export const updateOrder = async (req: Request, res: Response) => {
   }
 };
 
+//change order status
+export const changeOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ error: "Status is required" });
+    }
+
+    const order = await prisma.order.update({
+      where: { id: Number(id) },
+      data: { status },
+    });
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to change order status" });
+  }
+};
+
+
 // Delete an order
 export const deleteOrder = async (req: Request, res: Response) => {
   try {
