@@ -1,16 +1,19 @@
+import AddOrderModal from "@/app/_components/addOrderModal";
 export default function OrdersPage() {
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold">Orders</h1>
         <span className="text-zinc-500 dark:text-zinc-400 text-sm mt-2 sm:mt-0">
-          View and manage your recent orders
+          <button className=" text-white bg-red-500 rounded-sm px-2 py-1">
+            New Order
+          </button>
         </span>
       </div>
 
       <div className="bg-white dark:bg-zinc-900 rounded-lg shadow p-6">
         <div className="mb-4">
-          <h2 className="text-lg font-medium">Recent Orders</h2>
+          <h2 className="text-lg font-medium">Recent Orders22222</h2>
         </div>
         {/* Placeholder orders table */}
         <div className="overflow-x-auto">
@@ -86,49 +89,7 @@ export default function OrdersPage() {
           <em>Order data is for demonstration purposes.</em>
         </div>
       </div>
-    </div>
-  );
-}
-("use client");
-import React, { useState } from "react";
-import AddOrderModal from "../../_components/addOrderModal";
-
-export default function OrderPage() {
-  const [addModalOpen, setAddModalOpen] = useState(false);
-
-  // Example onSubmit handler (adjust as needed to manage order data)
-  const handleAddOrder = (order: {
-    orderId: string;
-    date: string;
-    status: string;
-    total: string;
-  }) => {
-    // Add order logic here (e.g., update orders state or send to API)
-    // For demonstration, we'll just log it
-    console.log("Order added:", order);
-  };
-
-  return (
-    <div>
-      {/* Existing order table and content... */}
-      {/* Insert the Add Order Button at the top */}
-      <div className="mb-4 flex justify-end">
-        <button
-          onClick={() => setAddModalOpen(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 transition"
-        >
-          Add Order
-        </button>
-      </div>
-
-      {/* Place your existing table and content here, or wrap them as needed */}
-
-      {/* AddOrderModal component */}
-      <AddOrderModal
-        open={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSubmit={handleAddOrder}
-      />
+      {isModal && <AddOrderModal />}
     </div>
   );
 }

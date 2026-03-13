@@ -7,12 +7,14 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --watch src --ext ts --exec tsx src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.4.0",
+    "nodemon": "^3.1.14",
     "prisma": "^7.4.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
