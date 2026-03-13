@@ -1,44 +1,53 @@
 "use client";
 import React, { useState } from "react";
+import axios from "axios";
 
 interface AddOrderModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (order: {
-    orderId: string;
-    date: string;
-    status: string;
-    total: string;
-  }) => void;
+  //   onSubmit: (order: {
+  //     orderId: string;
+  //     date: string;
+  //     status: string;
+  //     total: string;
+  //   }) => void;
 }
 
-export default function AddOrderModal({
-  open,
-  onClose,
-  onSubmit,
-}: AddOrderModalProps) {
+export default function AddOrderModal() {
   const [orderId, setOrderId] = useState("");
   const [date, setDate] = useState("");
   const [status, setStatus] = useState("Processing");
   const [total, setTotal] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ orderId, date, status, total });
+
+    const res = await axios.post("/api/orders", {
+      orderId,
+      date,
+      status,
+      total,
+    });
+    console.log(res);
+
     setOrderId("");
     setDate("");
     setStatus("Processing");
     setTotal("");
-    onClose();
+    // onClose();
   };
 
   if (!open) return null;
+
+  const handleClick = () => {
+    console.log("x clicked");
+  };
 
   return (
     <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <button
-          onClick={onClose}
+          onClick={handleClick}
           className="absolute top-3 right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
           aria-label="Close"
         >
@@ -106,7 +115,7 @@ export default function AddOrderModal({
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
-              onClick={onClose}
+              //   onClick={onClose}
               className="px-4 py-2 text-sm rounded bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition"
             >
               Cancel
