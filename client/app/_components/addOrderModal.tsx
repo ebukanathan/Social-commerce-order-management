@@ -1,9 +1,10 @@
 "use client";
+
 import React, { useState } from "react";
 import axios from "axios";
 
 interface AddOrderModalProps {
-  open: boolean;
+  // open: boolean;
   onClose: () => void;
   //   onSubmit: (order: {
   //     orderId: string;
@@ -13,7 +14,7 @@ interface AddOrderModalProps {
   //   }) => void;
 }
 
-export default function AddOrderModal() {
+export default function AddOrderModal({ onClose }: AddOrderModalProps) {
   const [orderId, setOrderId] = useState("");
   const [date, setDate] = useState("");
   const [status, setStatus] = useState("Processing");
@@ -47,7 +48,7 @@ export default function AddOrderModal() {
     <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-40">
       <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <button
-          onClick={handleClick}
+          onClick={onClose}
           className="absolute top-3 right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
           aria-label="Close"
         >
@@ -115,7 +116,7 @@ export default function AddOrderModal() {
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
-              //   onClick={onClose}
+              onClick={onClose}
               className="px-4 py-2 text-sm rounded bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition"
             >
               Cancel
