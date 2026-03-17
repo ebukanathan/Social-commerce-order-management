@@ -39,7 +39,7 @@ export default function OrdersPage() {
 
       <div className="bg-white dark:bg-zinc-900 rounded-lg shadow p-6">
         <div className="mb-4">
-          <h2 className="text-lg font-medium">Recent Orders</h2>
+          <h2 className="text-lg font-medium">Recent Orders22222</h2>
         </div>
         {/* Placeholder orders table */}
         <div className="overflow-x-auto">
