@@ -2,27 +2,27 @@
 
 import AddOrderModal from "@/app/_components/addOrderModal";
 import { useState } from "react";
+// import { sendOrderToDB } from "@/app/utils/calls";
+
 export default function OrdersPage() {
   const [isModal, setModal] = useState(false);
 
-  import { sendOrderToDB } from "@/app/utils/calls";
-
-  async function handleSubmit(order: {
-    orderId: string;
-    date: string;
-    status: string;
-    total: string;
-  }) {
-    try {
-      const response = await sendOrderToDB(order);
-      // You could refetch orders or update UI here
-      return response;
-    } catch (error) {
-      console.error("Error adding order:", error);
-      // Optionally show error to user
-      throw error;
-    }
-  }
+  // async function handleSubmit(order: {
+  //   orderId: string;
+  //   date: string;
+  //   status: string;
+  //   total: string;
+  // }) {
+  //   try {
+  //     const response = await sendOrderToDB(order);
+  //     // You could refetch orders or update UI here
+  //     return response;
+  //   } catch (error) {
+  //     console.error("Error adding order:", error);
+  //     // Optionally show error to user
+  //     throw error;
+  //   }
+  // }
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
