@@ -1,7 +1,5 @@
-// Plan: Implement a basic structure for a Product Controller with methods for CRUD operations (create, get, update, delete products) using Prisma. Export controller functions for later use in routes.
-
-import prisma from "prisma";
-import { Request, Response } from "express";
+import { prisma } from "../lib/prisma";
+import type { Request, Response } from "express";
 
 // Create a product
 export const createProduct = async (req: Request, res: Response) => {
@@ -69,4 +67,3 @@ export const deleteProduct = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to delete product" });
   }
 };
-

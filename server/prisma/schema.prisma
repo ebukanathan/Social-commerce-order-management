@@ -16,7 +16,7 @@ datasource db {
 model Business {
   id        String   @id @default(uuid())
   name      String
-  email     String
+  email     String @unique
   users     User[]
   products  Product[]
   customers Customer[]
