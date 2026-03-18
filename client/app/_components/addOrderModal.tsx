@@ -1,9 +1,10 @@
 "use client";
+
 import React, { useState } from "react";
 import axios from "axios";
 
 interface AddOrderModalProps {
-  open: boolean;
+  // open: boolean;
   onClose: () => void;
   //   onSubmit: (order: {
   //     orderId: string;
@@ -13,7 +14,7 @@ interface AddOrderModalProps {
   //   }) => void;
 }
 
-export default function AddOrderModal() {
+export default function AddOrderModal({ onClose }: AddOrderModalProps) {
   const [orderId, setOrderId] = useState("");
   const [date, setDate] = useState("");
   const [status, setStatus] = useState("Processing");
@@ -22,29 +23,26 @@ export default function AddOrderModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await axios.post("/api/orders", {
+    const res = await axios.post("http://localhost:3000/api/orders/create", {
       orderId,
       date,
       status,
       total,
     });
     console.log(res);
+    console.log("x clicked");
 
-    setOrderId("");
-    setDate("");
+    setOrderId(" ");
+    setDate(" ");
     setStatus("Processing");
-    setTotal("");
-    // onClose();
+    setTotal(" ");
+    onClose();
   };
 
   if (!open) return null;
 
-  const handleClick = () => {
-    console.log("x clicked");
-  };
-
   return (
-    <div className="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-40">
+    <div className="fixed z-50 inset-0 flex items-center justify-center bg-black/80 bg-opacity-40">
       <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <button
           onClick={handleClick}
