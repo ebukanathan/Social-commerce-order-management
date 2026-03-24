@@ -1,17 +1,17 @@
 import express from "express";
 import {
-  register,
+  registerBusiness,
   login,
-  logout,
-  getUser,
+  //logout,
+  //getUser,
 } from "../controller/auth.controller";
 import { Router } from "express";
 
 const router = Router();
 
-router.post("/register", register);
+router.post("/register-business", registerBusiness);
 router.post("/login", login);
-router.post("/logout", logout);
-router.get("/getUser", getUser);
+//router.post("/logout", logout);
+//router.get("/getUser", getUser);
 
 export default router;
