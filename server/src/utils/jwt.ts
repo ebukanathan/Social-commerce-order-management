@@ -21,3 +21,13 @@ export const generateToken = (payload: JwtPayload) => {
 
   return jwt.sign(payload, jwtSecret, options);
 };
+
+export const verifyToken = (token: string): JwtPayload => {
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    throw new Error("JWT_SECRET is not defined");
+  }
+
+  return jwt.verify(token, secret) as JwtPayload;
+};
