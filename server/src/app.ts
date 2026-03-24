@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.route";
 import businessRouter from "./routes/business.route";
 import orderRouter from "./routes/order.route";
 import productRouter from "./routes/product.route";
+import testRoute from "./routes/test.route";
 
 const app: Express = express();
 
@@ -22,7 +23,7 @@ app.use(
 );
 
 // Routes
-app.use("/api", router);
+app.use("/api", testRoute);
 app.use("/api/auth", authRouter);
 app.use("/api/business", businessRouter);
 app.use("/api/order", orderRouter);
