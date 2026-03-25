@@ -119,6 +119,41 @@ export class AuthService {
       },
     };
   }
+
+  //get current user details
+  async getCurrentUser(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        business: true,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (!user.isActive) {
+      throw new Error("Account is inactive");
+    }
+
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      businessId: user.businessId,
+      business: {
+        id: user.business.id,
+        name: user.business.name,
+        email: user.business.email,
+        phone: user.business.phone,
+        address: user.business.address,
+        logoUrl: user.business.logoUrl,
+      },
+    };
+  }
 }
 
 export const authService = new AuthService();

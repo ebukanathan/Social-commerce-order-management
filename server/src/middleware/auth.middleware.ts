@@ -28,7 +28,7 @@ export const authenticate = (
 
     const token = parts[1];
 
-    const decoded = verifyToken(token);
+    const decoded = verifyToken(token as string);
 
     req.user = decoded;
 
