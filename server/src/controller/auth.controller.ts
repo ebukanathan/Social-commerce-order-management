@@ -63,3 +63,27 @@ export const login = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const me = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    const result = await authService.getCurrentUser(req.user.userId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Current user fetched successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
+  }
+};
