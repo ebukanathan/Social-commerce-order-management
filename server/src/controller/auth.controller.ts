@@ -2,119 +2,88 @@ import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { authService } from "../services/auth.services";
+import {
+  registerBusinessSchema,
+  loginSchema,
+} from "../validation/auth.validation";
 
 //register a new user
 
-export const register = async (req: Request, res: Response) => {
-  const { email, password, businessId } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
+export const registerBusiness = async (req: Request, res: Response) => {
   try {
-    //check if user exists
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email,
-      },
+    const validatedData = registerBusinessSchema.parse(req.body);
+
+    const result = await authService.registerBusiness(validatedData);
+
+    return res.status(201).json({
+      success: true,
+      message: "Business registered successfully",
+      data: result,
     });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+  } catch (error: any) {
+    if (error.name === "ZodError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: error.errors,
+      });
     }
 
-    //create user
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        businessId: "222",
-      },
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Something went wrong",
     });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-//login a user
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
   try {
-    //check if user exists
-    const userExists = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-    if (!userExists) {
-      return res.status(400).json({ message: "User not found" });
-    }
-    //check if password is correct
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      userExists.password,
-    );
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid password" });
-    }
-    //generate token
-    const token = jwt.sign(
-      { userId: userExists.id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1h" },
-    );
-    //send token to client
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
-    });
+    const validatedData = loginSchema.parse(req.body);
 
-    return res.status(200).json({ message: "Login successful" });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+    const result = await authService.login(validatedData);
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      data: result,
+    });
+  } catch (error: any) {
+    if (error.name === "ZodError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: error.errors,
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
 };
 
-//logout a user
-export const logout = async (req: Request, res: Response) => {
+export const me = async (req: Request, res: Response) => {
   try {
-    //clear token from client
-    res.clearCookie("token");
-    return res.status(200).json({ message: "Logout successful" });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-//get a user
-
-export const getUser = async (req: Request, res: Response) => {
-  interface JwtPayloadWithUserId {
-    userId: string;
-  }
-  try {
-    //get user from token
-    const token = req.cookies.token;
-    console.log(token);
-    if (!token) {
-      return res.status(401).json({ message: "Unauthorized" });
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
     }
-    //verify token
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string,
-    ) as JwtPayloadWithUserId;
-    if (!decoded) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    //get user from database
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
+
+    const result = await authService.getCurrentUser(req.user.userId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Current user fetched successfully",
+      data: result,
     });
-    return res.status(200).json({ user });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
 };
