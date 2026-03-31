@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { registerUser } from "../../features/auth/api";
 
 type SignupFormData = {
   businessName: string;
@@ -80,22 +81,9 @@ export default function SignupPage() {
         password: formData.password,
       };
 
-      console.log("Signup payload:", payload);
+      const data = await registerUser(payload);
 
-      // Replace with your real API URL
-      // const response = await fetch("http://localhost:5000/api/auth/register", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(payload),
-      // });
-
-      // const data = await response.json();
-
-      // if (!response.ok) {
-      //   throw new Error(data.message || "Signup failed");
-      // }
+      console.log("Registration successful:", data);
 
       setSuccess("Account created successfully.");
       setFormData({
