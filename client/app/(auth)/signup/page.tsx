@@ -88,6 +88,7 @@ export default function SignupPage() {
       const data = await registerUser(payload);
 
       setSuccess("Account created successfully.");
+      console.log("Registered user:", data);
       setFormData({
         businessName: "",
         firstName: "",

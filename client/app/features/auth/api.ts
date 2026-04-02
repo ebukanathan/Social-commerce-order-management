@@ -2,7 +2,8 @@ import { api } from "../../lib/axios";
 
 export type RegisterPayload = {
   businessName: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone?: string;
   password: string;
