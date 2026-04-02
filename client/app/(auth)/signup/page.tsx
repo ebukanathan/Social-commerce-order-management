@@ -6,7 +6,8 @@ import { registerUser } from "../../features/auth/api";
 
 type SignupFormData = {
   businessName: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   password: string;
@@ -16,7 +17,8 @@ type SignupFormData = {
 export default function SignupPage() {
   const [formData, setFormData] = useState<SignupFormData>({
     businessName: "",
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     password: "",
@@ -39,7 +41,8 @@ export default function SignupPage() {
   const validateForm = () => {
     if (
       !formData.businessName.trim() ||
-      !formData.fullName.trim() ||
+      !formData.firstName.trim() ||
+      !formData.lastName.trim() ||
       !formData.email.trim() ||
       !formData.password.trim() ||
       !formData.confirmPassword.trim()
@@ -75,7 +78,8 @@ export default function SignupPage() {
 
       const payload = {
         businessName: formData.businessName,
-        fullName: formData.fullName,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone || undefined,
         password: formData.password,
@@ -83,12 +87,11 @@ export default function SignupPage() {
 
       const data = await registerUser(payload);
 
-      console.log("Registration successful:", data);
-
       setSuccess("Account created successfully.");
       setFormData({
         businessName: "",
-        fullName: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phone: "",
         password: "",
@@ -174,17 +177,35 @@ export default function SignupPage() {
 
               <div>
                 <label
-                  htmlFor="fullName"
+                  htmlFor="firstName"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  Full Name
+                  First Name
                 </label>
                 <input
-                  id="fullName"
-                  name="fullName"
+                  id="firstName"
+                  name="firstName"
                   type="text"
-                  placeholder="Enter your full name"
-                  value={formData.fullName}
+                  placeholder="Enter your first name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Last Name
+                </label>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  placeholder="Enter your last name"
+                  value={formData.lastName}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                 />
