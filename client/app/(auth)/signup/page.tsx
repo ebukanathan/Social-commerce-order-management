@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { registerUser } from "../../features/auth/api";
 
 type SignupFormData = {
   businessName: string;
@@ -84,7 +85,7 @@ export default function SignupPage() {
         password: formData.password,
       };
 
-      console.log("Signup payload:", payload);
+      const data = await registerUser(payload);
 
       setSuccess("Account created successfully.");
       setFormData({
