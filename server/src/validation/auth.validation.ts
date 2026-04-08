@@ -7,7 +7,7 @@ export const registerBusinessSchema = z.object({
   address: z.string().optional(),
   firstName: z.string().min(2, "First name is required"),
   lastName: z.string().min(2, "Last name is required"),
-  userEmail: z.string().email("Valid user email is required"),
+  email: z.string().email("Valid user email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 

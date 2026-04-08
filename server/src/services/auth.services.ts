@@ -16,7 +16,7 @@ export class AuthService {
       address,
       firstName,
       lastName,
-      userEmail,
+      email,
       password,
     } = data;
 
@@ -29,7 +29,7 @@ export class AuthService {
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: { email: userEmail },
+      where: { email: email },
     });
 
     if (existingUser) {
@@ -52,7 +52,7 @@ export class AuthService {
         data: {
           firstName,
           lastName,
-          email: userEmail,
+          email: email,
           password: hashedPassword,
           role: "ADMIN",
           businessId: business.id,
