@@ -7,10 +7,12 @@ import {
   registerBusinessSchema,
   loginSchema,
 } from "../validation/auth.validation";
+import { ZodError } from "zod";
 
 //register a new user
 
 export const registerBusiness = async (req: Request, res: Response) => {
+  console.log("Received registration request with body:", req.body); // Debugging log
   try {
     const validatedData = registerBusinessSchema.parse(req.body);
 
@@ -22,18 +24,20 @@ export const registerBusiness = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    if (error.name === "ZodError") {
+    if (error instanceof ZodError) {
       return res.status(400).json({
         success: false,
         message: "Validation failed",
-        errors: error.errors,
+        errors: error.issues,
       });
     }
 
-    return res.status(400).json({
-      success: false,
-      message: error.message || "Something went wrong",
-    });
+    console.log("Error during registration222:", error); // Debugging log
+
+    // return res.status(403).json({
+    //   success: false,
+    //   message: error.message || "Something went wrong",
+    // });
   }
 };
 
