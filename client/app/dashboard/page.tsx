@@ -1,4 +1,25 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { getCurrentUser } from "../features/auth/api";
+
 export default function DashboardPage() {
+  const [currentUser, setCurrentuser] = useState(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentuser(user);
+      } catch (error) {
+        console.error("Failed to fetch current user", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
