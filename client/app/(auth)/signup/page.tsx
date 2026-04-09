@@ -3,23 +3,30 @@
 import Link from "next/link";
 import { useState } from "react";
 import { registerUser } from "../../features/auth/api";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 type SignupFormData = {
   businessName: string;
+  businessEmail: string;
   firstName: string;
   lastName: string;
+  address?: string;
   email: string;
-  phone: string;
+  phone?: string;
   password: string;
   confirmPassword: string;
 };
 
 export default function SignupPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState<SignupFormData>({
     businessName: "",
+    businessEmail: "",
     firstName: "",
     lastName: "",
     email: "",
+    address: "",
     phone: "",
     password: "",
     confirmPassword: "",
@@ -78,6 +85,7 @@ export default function SignupPage() {
 
       const payload = {
         businessName: formData.businessName,
+        businessEmail: formData.email,
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -91,6 +99,7 @@ export default function SignupPage() {
       console.log("Registered user:", data);
       setFormData({
         businessName: "",
+        businessEmail: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -98,6 +107,8 @@ export default function SignupPage() {
         password: "",
         confirmPassword: "",
       });
+
+      router.push("/login");
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Something went wrong.";
