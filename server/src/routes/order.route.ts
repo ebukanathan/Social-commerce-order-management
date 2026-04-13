@@ -1,14 +1,22 @@
-// Plan: Implement a basic structure for an Order Route with methods for CRUD operations (create, get, update, delete orders) using Prisma. Export route functions for later use in routes.
-
+// src/routes/order.routes.ts
 import { Router } from "express";
-import { createOrder, getOrders, getOrderById, updateOrder, deleteOrder } from "../controller/order.controller";
+import {
+  createOrder,
+  deleteOrder,
+  getOrderById,
+  getOrders,
+  updateOrder,
+} from "../controller/order.controller";
+
 
 const router = Router();
 
-router.post("/create", createOrder);
+
+
+router.post("/", createOrder);
 router.get("/", getOrders);
 router.get("/:id", getOrderById);
-router.put("/:id", updateOrder);
+router.patch("/:id", updateOrder);
 router.delete("/:id", deleteOrder);
 
 export default router;
