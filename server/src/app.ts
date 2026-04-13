@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import type { Express } from "express";
+import cookieParser from "cookie-parser";
 import { router } from "./routes";
 import authRouter from "./routes/auth.route";
 import businessRouter from "./routes/business.route";
@@ -11,6 +12,7 @@ import testRoute from "./routes/test.route";
 const app: Express = express();
 
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,7 +28,7 @@ app.use(
 app.use("/api", testRoute);
 app.use("/api/auth", authRouter);
 app.use("/api/business", businessRouter);
-app.use("/api/order", orderRouter);
+app.use("/api/orders", orderRouter);
 app.use("/api/product", productRouter);
 
 // Health check

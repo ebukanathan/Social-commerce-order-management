@@ -1,100 +1,136 @@
-import { prisma } from "../lib/prisma";
-
-// Plan: Implement a basic structure for an Order Controller with methods for CRUD operations (create, get, update, delete orders) using Prisma. Export controller functions for later use in routes.
-
+// src/controller/order.controller.ts
 import type { Request, Response } from "express";
+import { orderService } from "../services/order.services";
 
-// Create an order
 export const createOrder = async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
-    // const { orderId, date, status, total } = req.body;
-    const order = await prisma.order.create({
-      data: {
-        customerId: "222",
-        businessId: req.body.businessId,
-        status: req.body.status,
-        total: Number(req.body.total),
-      },
+    const businessId = req.user?.businessId;
+
+    if (!businessId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { customerId, total, subtotal, source, notes } = req.body;
+
+    if (!customerId || total === undefined) {
+      return res.status(400).json({
+        message: "customerId and total are required",
+      });
+    }
+
+    const orderInput: any = {
+      customerId,
+      total: Number(total),
+      source,
+      notes,
+    };
+    if (subtotal !== undefined) {
+      orderInput.subtotal = Number(subtotal);
+    }
+    const order = await orderService.createOrder(businessId, orderInput, req.user!.userId);
+    return res.status(201).json({
+      message: "Order created successfully",
+      order,
     });
-    console.log(order);
-    res.status(201).json(order);
   } catch (error) {
-    res.status(500).json({ message: error });
+    console.error("Create order error:", error);
+    return res.status(500).json({ message: "Failed to create order" });
   }
 };
 
-// Get all orders
 export const getOrders = async (req: Request, res: Response) => {
   try {
-    const orders = await prisma.order.findMany();
-    res.json(orders);
+    const businessId = req.user?.businessId;
+
+    if (!businessId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const orders = await orderService.getOrders(businessId);
+
+    return res.status(200).json({
+      message: "Orders fetched successfully",
+      orders,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch orders" });
+    console.error("Get orders error:", error);
+    return res.status(500).json({ message: "Failed to fetch orders" });
   }
 };
 
-// Get an order by ID
 export const getOrderById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const order = await prisma.order.findUnique({
-      where: { id: Number(id) },
-    });
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
+    const businessId = req.user?.businessId;
+
+    if (!businessId) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
-    res.json(order);
+
+    const { id } = req.params;
+
+    const order = await orderService.getOrderById(id, businessId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    return res.status(200).json({
+      message: "Order fetched successfully",
+      order,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch order" });
+    console.error("Get order error:", error);
+    return res.status(500).json({ message: "Failed to fetch order" });
   }
 };
 
-// Update an order
 export const updateOrder = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const { data } = req.body;
-    const order = await prisma.order.update({
-      where: { id: Number(id) },
-      data: data,
-    });
-    res.json(order);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update order" });
-  }
-};
+    const businessId = req.user?.businessId;
 
-//change order status
-export const changeOrderStatus = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    if (!status) {
-      return res.status(400).json({ error: "Status is required" });
+    if (!businessId) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const order = await prisma.order.update({
-      where: { id: Number(id) },
-      data: { status },
-    });
+    const { id } = req.params;
 
-    res.json(order);
+    const order = await orderService.updateOrder(id, businessId, req.body);
+
+    return res.status(200).json({
+      message: "Order updated successfully",
+      order,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to change order status" });
+    console.error("Update order error:", error);
+
+    if (error instanceof Error && error.message === "Order not found") {
+      return res.status(404).json({ message: error.message });
+    }
+
+    return res.status(500).json({ message: "Failed to update order" });
   }
 };
 
-// Delete an order
 export const deleteOrder = async (req: Request, res: Response) => {
   try {
+    const businessId = req.user?.businessId;
+
+    if (!businessId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const { id } = req.params;
-    await prisma.order.delete({
-      where: { id: Number(id) },
-    });
-    res.json({ message: "Order deleted successfully" });
+
+    const result = await orderService.deleteOrder(id, businessId);
+
+    return res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete order" });
+    console.error("Delete order error:", error);
+
+    if (error instanceof Error && error.message === "Order not found") {
+      return res.status(404).json({ message: error.message });
+    }
+
+    return res.status(500).json({ message: "Failed to delete order" });
   }
 };
