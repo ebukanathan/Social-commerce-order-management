@@ -5,6 +5,7 @@ import { orderService } from "../services/order.services";
 export const createOrder = async (req: Request, res: Response) => {
   try {
     const businessId = req.user?.businessId;
+    console.log("this is the businessId:", businessId);
 
     if (!businessId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -27,7 +28,11 @@ export const createOrder = async (req: Request, res: Response) => {
     if (subtotal !== undefined) {
       orderInput.subtotal = Number(subtotal);
     }
-    const order = await orderService.createOrder(businessId, orderInput, req.user!.userId);
+    const order = await orderService.createOrder(
+      businessId,
+      orderInput,
+      req.user!.userId,
+    );
     return res.status(201).json({
       message: "Order created successfully",
       order,
