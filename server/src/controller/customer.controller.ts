@@ -10,14 +10,14 @@ export const createCustomer = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { fullName, phone, email, address } = req.body;
+    const { name, phone, email, address } = req.body;
 
-    if (!fullName) {
-      return res.status(400).json({ message: "Full name is required" });
+    if (!name) {
+      return res.status(400).json({ message: "Name is required" });
     }
 
     const customer = await customerService.createCustomer(businessId, {
-      fullName,
+      name,
       phone,
       email,
       address,

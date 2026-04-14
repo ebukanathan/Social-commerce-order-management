@@ -3,7 +3,7 @@ import { boolean } from "zod";
 import { prisma } from "../lib/prisma";
 
 type CreateCustomerInput = {
-  fullName: string;
+  name: string;
   phone?: string | null;
   email?: string;
   address?: string;
@@ -13,7 +13,7 @@ export class CustomerService {
   async createCustomer(businessId: string, data: CreateCustomerInput) {
     return prisma.customer.create({
       data: {
-        fullName: data.fullName,
+        name: data.name,
         phone: data.phone,
         email: data.email,
         address: data.address,
@@ -28,7 +28,7 @@ export class CustomerService {
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
-        fullName: true,
+        name: true,
         phone: true,
       },
     });

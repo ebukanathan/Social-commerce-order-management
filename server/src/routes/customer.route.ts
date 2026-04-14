@@ -4,11 +4,11 @@ import {
   createCustomer,
   getCustomers,
 } from "../controller/customer.controller";
-//import { protect } from "../middleware/auth.middleware";
+import { authenticate } from "../middleware/auth.middleware";
 
 const router = Router();
 
-//router.use(protect);
+router.use(authenticate);
 
 router.post("/", createCustomer);
 router.get("/", getCustomers);
