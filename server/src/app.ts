@@ -8,6 +8,7 @@ import businessRouter from "./routes/business.route";
 import orderRouter from "./routes/order.route";
 import productRouter from "./routes/product.route";
 import testRoute from "./routes/test.route";
+import customerRoutes from "./routes/customer.route";
 
 const app: Express = express();
 
@@ -30,6 +31,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/business", businessRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/product", productRouter);
+app.use("/api/customers", customerRoutes);
 
 // Health check
 app.get("/health", (req, res) => {

@@ -13,7 +13,7 @@ export const authenticate = (
     if (!accessToken) {
       return res.status(401).json({
         success: false,
-        message: "Authorization header is missing",
+        message: "Authorization header is missingeeee",
       });
     }
 
