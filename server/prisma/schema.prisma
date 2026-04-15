@@ -120,8 +120,10 @@ model Customer {
   email     String?
   address   String?
   notes     String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  incomingMessages IncomingMessage[]
 
   businessId String
   business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
@@ -196,4 +198,37 @@ model OrderItem {
 
   @@index([orderId])
   @@index([productId])
+}
+
+model IncomingMessage {
+  id                String   @id @default(cuid())
+  businessId        String?
+  customerId        String?
+  channel           MessageChannel
+  externalMessageId String?  @unique
+  senderPhone       String
+  senderName        String?
+  messageType       String
+  textBody          String?
+  rawPayload        Json
+  status            MessageStatus @default(RECEIVED)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  customer          Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([senderPhone])
+  @@index([businessId, createdAt])
+  @@index([customerId])
+}
+
+enum MessageChannel {
+  WHATSAPP
+}
+
+enum MessageStatus {
+  RECEIVED
+  REVIEWED
+  CONVERTED_TO_ORDER
+  IGNORED
 }

@@ -9,6 +9,8 @@ import orderRouter from "./routes/order.route";
 import productRouter from "./routes/product.route";
 import testRoute from "./routes/test.route";
 import customerRoutes from "./routes/customer.route";
+import whatsappRoutes from "./routes/whatsapp.route";
+import incomingMessageRoutes from "./routes/incoming-messages.route";
 
 const app: Express = express();
 
@@ -32,6 +34,8 @@ app.use("/api/business", businessRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/product", productRouter);
 app.use("/api/customers", customerRoutes);
+app.use("/api/whatsapp", whatsappRoutes);
+app.use("/api/incoming-messages", incomingMessageRoutes);
 
 // Health check
 app.get("/health", (req, res) => {
