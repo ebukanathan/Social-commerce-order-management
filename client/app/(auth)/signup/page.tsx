@@ -3,21 +3,30 @@
 import Link from "next/link";
 import { useState } from "react";
 import { registerUser } from "../../features/auth/api";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 type SignupFormData = {
   businessName: string;
-  fullName: string;
+  businessEmail: string;
+  firstName: string;
+  lastName: string;
+  address?: string;
   email: string;
-  phone: string;
+  phone?: string;
   password: string;
   confirmPassword: string;
 };
 
 export default function SignupPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState<SignupFormData>({
     businessName: "",
-    fullName: "",
+    businessEmail: "",
+    firstName: "",
+    lastName: "",
     email: "",
+    address: "",
     phone: "",
     password: "",
     confirmPassword: "",
@@ -39,7 +48,8 @@ export default function SignupPage() {
   const validateForm = () => {
     if (
       !formData.businessName.trim() ||
-      !formData.fullName.trim() ||
+      !formData.firstName.trim() ||
+      !formData.lastName.trim() ||
       !formData.email.trim() ||
       !formData.password.trim() ||
       !formData.confirmPassword.trim()
@@ -75,7 +85,9 @@ export default function SignupPage() {
 
       const payload = {
         businessName: formData.businessName,
-        fullName: formData.fullName,
+        businessEmail: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone || undefined,
         password: formData.password,
@@ -86,14 +98,19 @@ export default function SignupPage() {
       console.log("Registration successful:", data);
 
       setSuccess("Account created successfully.");
+      console.log("Registered user:", data);
       setFormData({
         businessName: "",
-        fullName: "",
+        businessEmail: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phone: "",
         password: "",
         confirmPassword: "",
       });
+
+      router.push("/login");
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Something went wrong.";
@@ -174,17 +191,35 @@ export default function SignupPage() {
 
               <div>
                 <label
-                  htmlFor="fullName"
+                  htmlFor="firstName"
                   className="mb-2 block text-sm font-medium text-slate-700"
                 >
-                  Full Name
+                  First Name
                 </label>
                 <input
-                  id="fullName"
-                  name="fullName"
+                  id="firstName"
+                  name="firstName"
                   type="text"
-                  placeholder="Enter your full name"
-                  value={formData.fullName}
+                  placeholder="Enter your first name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="mb-2 block text-sm font-medium text-slate-700"
+                >
+                  Last Name
+                </label>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  placeholder="Enter your last name"
+                  value={formData.lastName}
                   onChange={handleChange}
                   className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                 />

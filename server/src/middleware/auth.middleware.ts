@@ -8,29 +8,30 @@ export const authenticate = (
   next: NextFunction,
 ) => {
   try {
-    const authHeader = req.headers.authorization;
+    const accessToken = req.cookies.accessToken;
 
-    if (!authHeader) {
+    if (!accessToken) {
       return res.status(401).json({
         success: false,
-        message: "Authorization header is missing",
+        message: "Authorization header is missingeeee",
       });
     }
 
-    const parts = authHeader.split(" ");
+    // const parts = authHeader.split(" ");
 
-    if (parts.length !== 2 || parts[0] !== "Bearer") {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid authorization format",
-      });
-    }
+    // if (parts.length !== 2 || parts[0] !== "Bearer") {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "Invalid authorization format",
+    //   });
+    // }
 
-    const token = parts[1];
+    // const token = parts[1];
 
-    const decoded = verifyToken(token as string);
+    const decoded = verifyToken(accessToken as string);
 
     req.user = decoded;
+    console.log("Authenticated user:", req.user); // Debugging log
 
     next();
   } catch (error) {
