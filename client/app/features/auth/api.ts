@@ -6,6 +6,7 @@ export type RegisterPayload = {
   address?: string;
   firstName: string;
   lastName: string;
+  fullName: string;
   email: string;
   phone?: string;
   password: string;

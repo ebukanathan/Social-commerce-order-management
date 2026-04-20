@@ -95,6 +95,8 @@ export default function SignupPage() {
 
       const data = await registerUser(payload);
 
+      console.log("Registration successful:", data);
+
       setSuccess("Account created successfully.");
       console.log("Registered user:", data);
       setFormData({
