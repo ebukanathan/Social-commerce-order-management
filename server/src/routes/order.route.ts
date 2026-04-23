@@ -12,7 +12,7 @@ import { authenticate } from "../middleware/auth.middleware";
 const router = Router();
 
 router.post("/", authenticate, createOrder);
-router.get("/", getOrders);
+router.get("/", authenticate, getOrders);
 router.get("/:id", getOrderById);
 router.patch("/:id", updateOrder);
 router.delete("/:id", deleteOrder);

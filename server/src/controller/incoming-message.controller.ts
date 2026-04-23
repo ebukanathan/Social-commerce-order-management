@@ -1,10 +1,12 @@
 // src/controller/incoming-message.controller.ts
 import type { Request, Response } from "express";
-import { prisma } from "../libs/prisma";
+import { prisma } from "../lib/prisma";
 
 export const getIncomingMessages = async (req: Request, res: Response) => {
   try {
     const businessId = req.user?.businessId;
+
+    console.log("request from frontend");
 
     if (!businessId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -17,7 +19,7 @@ export const getIncomingMessages = async (req: Request, res: Response) => {
         customer: {
           select: {
             id: true,
-            fullName: true,
+            name: true,
             phone: true,
           },
         },
