@@ -139,3 +139,41 @@ export const deleteOrder = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to delete order" });
   }
 };
+
+export const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const businessId = req.user?.businessId;
+
+    if (!businessId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!id || typeof id !== "string") {
+      return res
+        .status(400)
+        .json({ message: "ID is required and must be a string" });
+    }
+
+    if (!status || typeof status !== "string") {
+      return res
+        .status(400)
+        .json({ message: "Status is required and must be a string" });
+    }
+
+    const validStatuses = ["PENDING", "CONFIRMED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"];
+    if (!validStatuses.includes(status)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid status value" });
+    }
+
+    const order = await orderService.updateOrderStatus(id, status as "PENDING" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED");
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update order status" });
+  }
+};
