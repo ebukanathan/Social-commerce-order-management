@@ -131,6 +131,26 @@ export class OrderService {
 
     return { message: "Order deleted successfully" };
   }
+
+  async updateOrderStatus(orderId: string, status: UpdateOrderInput["status"]) {
+    const existingOrder = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+    if (!existingOrder) {
+      throw new Error("Order not found");
+    }
+
+    return prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status,
+      },
+    });
+  }
 }
 
 export const orderService = new OrderService();
