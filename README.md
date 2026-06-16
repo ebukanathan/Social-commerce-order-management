@@ -77,7 +77,7 @@ This application demonstrates real-world software engineering practices includin
           ▼
 ┌────────────────────┐
 │      Database      │
-│ PostgreSQL/MongoDB │
+│ PostgreSQL │
 └────────────────────┘
 ```
 
@@ -112,7 +112,7 @@ This application demonstrates real-world software engineering practices includin
 ### Deployment
 
 * Docker
-* AWS
+  
 
 ---
 
