@@ -2,11 +2,11 @@
 
 > A modern SAAS platform that helps businesses manage products, customers, orders, and social selling activities from a centralized dashboard.
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
-![React](https://img.shields.io/badge/React-19-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
-![Node.js](https://img.shields.io/badge/postgresql-blue?logo=postgresql)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?logo=React)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green?logo=node.js)
+![Node.js](https://img.shields.io/badge/postgresql-black?logo=postgreSQL)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 
