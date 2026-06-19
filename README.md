@@ -6,7 +6,9 @@
 ![React](https://img.shields.io/badge/React-19-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-Backend-green)
+![Node.js](https://img.shields.io/badge/postgresql-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
+
 
 ---
 
