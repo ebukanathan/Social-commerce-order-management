@@ -29,7 +29,8 @@ This application demonstrates real-world software engineering practices includin
 * Customer registration and profile management
 * Customer activity tracking
 * Purchase history
-* Customer segmentation
+* customer notification
+  
 
 
 
