@@ -94,7 +94,8 @@ This application demonstrates real-world software engineering practices includin
 * React
 * TypeScript
 * Tailwind CSS
-* TanStack Query
+* TanStack
+* React Query
 
 ### Backend
 
